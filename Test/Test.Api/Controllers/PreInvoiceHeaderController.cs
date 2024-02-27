@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Store.Application.Responses;
+using Test.Application.DTOs.PreInvoiceHeader;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Commands;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Queries;
 
@@ -27,6 +28,12 @@ namespace Store.Api.Controllers
         public async Task<Response> GetPreInvoiceHeader([FromQuery] GetPreInvoiceHeader getProducts)
         {
             return await _mediator.Send(getProducts);
+        }
+
+        [HttpPut,Route("status")]
+        public async Task<Response> UpdateStatus([FromForm] int  id)
+        {
+            return await _mediator.Send(new UpdateStatusPreInvoiceHeader() { Request=new UpdatePreInvoiceHeaderStatusDto() { PreInvoiceHeaderId=id} });
         }
 
         //[HttpPut]

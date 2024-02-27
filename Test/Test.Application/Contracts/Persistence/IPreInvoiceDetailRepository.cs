@@ -7,5 +7,7 @@ namespace Test.Application.Contracts.Persistence
         Task<bool> DublicateProduct(int preInvoiceHeaderId, int productId);
 
         Task<double> GetTotalPrice(int preInvoiceHeaderId);
+
+        Task<double> GetFinalTotalPrice(int customerId);
     }
 }

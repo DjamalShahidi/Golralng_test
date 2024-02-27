@@ -22,10 +22,15 @@ namespace Test.Application.DTOs.Discount.Validator
                 .MustAsync(async (id, token) =>
                 {
 
-                    var isExist = await _unitOfWork.PreInvoiceHeaderRepository.IsExist(id);
-                    if (isExist==false)
+                    var header = await _unitOfWork.PreInvoiceHeaderRepository.GetAsync(id);
+                    if (header == null)
                     {
                         return false;
+                    }
+                    else if (header.Status == PreInvoiceHeaderStatus.Final)
+                    {
+                        return false;
+
                     }
 
                     totalPreInvoiceAmount = await _unitOfWork.PreInvoiceDetailRepository.GetTotalPrice(id);

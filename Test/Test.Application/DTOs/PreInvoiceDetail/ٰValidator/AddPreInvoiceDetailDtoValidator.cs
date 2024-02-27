@@ -29,6 +29,10 @@ namespace Test.Application.DTOs.PreInvoiceHeader._ٰValidator
                     {
                         return false;
                     }
+                    else if (preInvoiceHeader.Status ==PreInvoiceHeaderStatus.Final )
+                    {
+                        return false;
+                    }
                     return true;
 
                 }).WithMessage("NotExist PreInvoiceHeaderId");

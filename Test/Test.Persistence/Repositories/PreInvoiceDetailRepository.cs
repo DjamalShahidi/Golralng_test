@@ -22,5 +22,12 @@ namespace Test.Persistence.Repositories
         {
             return await _context.PreInvoiceDetails.Where(a => a.PreInvoiceHeaderId == preInvoiceHeaderId).SumAsync(a => a.Price * a.Count);
         }
+
+        public async Task<double> GetFinalTotalPrice(int customerId)
+        {
+            return await _context.PreInvoiceDetails.Where(a => a.PreInvoiceHeader.CustomerId == customerId 
+                                                            && a.PreInvoiceHeader.Status==PreInvoiceHeaderStatus.Final)
+                                                   .SumAsync(a => a.Price * a.Count);
+        }
     }
 }
