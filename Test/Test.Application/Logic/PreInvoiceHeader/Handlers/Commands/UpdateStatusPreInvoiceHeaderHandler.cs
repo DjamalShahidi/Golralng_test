@@ -7,8 +7,8 @@ using Test.Application.Logic.PreInvoiceHeader.Requests.Commands;
 
 namespace Test.Application.Logic.PreInvoiceHeader.Handlers.Commands
 {
-    public class UpdateStatusPreInvoiceHeaderHandler: IRequestHandler<UpdateStatusPreInvoiceHeader, Response>
-   {
+    public class UpdateStatusPreInvoiceHeaderHandler : IRequestHandler<UpdateStatusPreInvoiceHeader, Response>
+    {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
@@ -20,33 +20,45 @@ namespace Test.Application.Logic.PreInvoiceHeader.Handlers.Commands
 
         public async Task<Response> Handle(UpdateStatusPreInvoiceHeader request, CancellationToken cancellationToken)
         {
-            var validator = new UpdatePreInvoiceHeaderStatusDtoValidator(_unitOfWork);
+            try
+            {
 
-            var validatorResult = await validator.ValidateAsync(request.Request);
 
-            if (validatorResult.IsValid == false)
+                var validator = new UpdatePreInvoiceHeaderStatusDtoValidator(_unitOfWork);
+
+                var validatorResult = await validator.ValidateAsync(request.Request);
+
+                if (validatorResult.IsValid == false)
+                {
+                    return new Response()
+                    {
+                        ErrorMessages = validatorResult.Errors.Select(a => a.ErrorMessage).ToList(),
+                        IsSuccess = false,
+                        Result = null
+                    };
+                }
+
+                var header = await _unitOfWork.PreInvoiceHeaderRepository.GetAsync(request.Request.PreInvoiceHeaderId);
+
+                header.Status = Domain.PreInvoiceHeaderStatus.Final;
+
+                _unitOfWork.PreInvoiceHeaderRepository.Update(header);
+
+                await _unitOfWork.Save(cancellationToken);
+
+                return new Response()
+                {
+                    IsSuccess = true
+                };
+            }
+            catch (Exception ex)
             {
                 return new Response()
                 {
-                    ErrorMessages = validatorResult.Errors.Select(a => a.ErrorMessage).ToList(),
                     IsSuccess = false,
-                    Result = null
+                    ErrorMessages = new List<string>() { ex.Message }
                 };
             }
-
-            var header = await _unitOfWork.PreInvoiceHeaderRepository.GetAsync(request.Request.PreInvoiceHeaderId);
-
-            header.Status = Domain.PreInvoiceHeaderStatus.Final;
-
-             _unitOfWork.PreInvoiceHeaderRepository.Update(header);
-
-            await _unitOfWork.Save(cancellationToken);
-
-            return new Response()
-            {
-                IsSuccess=true
-            };
         }
-
     }
 }
