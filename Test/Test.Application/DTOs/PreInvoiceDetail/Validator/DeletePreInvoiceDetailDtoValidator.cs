@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Test.Application.Contracts.Persistence;
-using Test.Application.DTOs.PreInvoiceHeader;
 using Test.Domain;
 
 namespace Test.Application.DTOs.PreInvoiceDetail.Validator
@@ -35,7 +34,7 @@ namespace Test.Application.DTOs.PreInvoiceDetail.Validator
                      }
                      return true;
 
-                 }).WithMessage("NotExist PreInvoiceHeaderId");
+                 }).WithMessage("NotExist PreInvoiceDeail or PreInvoiceHeader status is Final");
         }
     }
 }

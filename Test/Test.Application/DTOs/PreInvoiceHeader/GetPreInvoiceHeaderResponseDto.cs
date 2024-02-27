@@ -1,4 +1,5 @@
 ﻿using Test.Application.DTOs.Common;
+using Test.Domain;
 
 namespace Test.Application.DTOs.PreInvoiceHeader
 {
@@ -7,6 +8,8 @@ namespace Test.Application.DTOs.PreInvoiceHeader
         public int SalesLineId { get; set; }
 
         public int SellerId { get; set; }
+
+        public PreInvoiceHeaderStatus Status { get; set; }
 
         public GetPreInvoiceHeaderDtoCustomer Customer { get; set; }
     }

@@ -40,7 +40,9 @@ namespace Test.Application.Logic.Discount.Handlers.Commands
 
                 var discount = await _unitOfWork.DiscountRepository.GetAsync(request.Request.Id);
 
-                discount = _mapper.Map<Domain.Discount>(request.Request);
+                discount.PreInvoiceDetailId = request.Request.PreInvoiceDetailId;
+                discount.Amount = request.Request.Amount;
+                discount.Type = request.Request.Type;
 
                 _unitOfWork.DiscountRepository.Update(discount);
 

@@ -23,8 +23,6 @@ namespace Test.Application.Logic.PreInvoiceDetail.Handlers.Commands
         {
             try
             {
-
-
                 var validator = new UpdatePreInvoiceDetailDtoValidator(_unitOfWork);
 
                 var validatorResult = await validator.ValidateAsync(request.Request);
@@ -42,7 +40,10 @@ namespace Test.Application.Logic.PreInvoiceDetail.Handlers.Commands
 
                 var preInvoiceDetail = await _unitOfWork.PreInvoiceDetailRepository.GetAsync(request.Request.Id);
 
-                preInvoiceDetail = _mapper.Map<Domain.PreInvoiceDetail>(request.Request);
+                preInvoiceDetail.ProductId = request.Request.ProductId;
+                preInvoiceDetail.Count = request.Request.Count;
+                preInvoiceDetail.Price = request.Request.Price;
+
 
                 _unitOfWork.PreInvoiceDetailRepository.Update(preInvoiceDetail);
 

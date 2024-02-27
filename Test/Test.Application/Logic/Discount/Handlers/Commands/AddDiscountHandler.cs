@@ -24,8 +24,6 @@ namespace Test.Application.Logic.Discount.Handlers.Commands
         {
             try
             {
-
-
                 var validator = new AddDiscountDtoValidator(_unitOfWork);
                 var validatorResult = await validator.ValidateAsync(request.Request);
 

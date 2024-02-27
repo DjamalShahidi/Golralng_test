@@ -11,7 +11,7 @@ namespace Test.Application.DTOs.PreInvoiceHeader.Validator
         {
             _unitOfWork = unitOfWork;
 
-            RuleFor(a => a.PreInvoiceHeaderId)
+            RuleFor(a => a.Id)
                .GreaterThan(0).WithMessage("Invalid Id")
                .MustAsync(async (Id, token) =>
                {

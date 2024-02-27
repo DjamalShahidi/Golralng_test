@@ -19,7 +19,7 @@ namespace Test.Application.DTOs.Discount.Validator
 
             double totalPreInvoiceAmount = 0;
 
-            double totalDiscountAmount = 0;
+            List<Domain.Discount> discounts = new List<Domain.Discount>();
 
             RuleFor(a => a.Id)
                 .GreaterThan(0).WithMessage("Invalid Id")
@@ -34,15 +34,14 @@ namespace Test.Application.DTOs.Discount.Validator
 
                     var preInvoiceHeader = await _unitOfWork.PreInvoiceHeaderRepository.GetAsync(dicount.PreInvoiceHeaderId);
 
+                    totalPreInvoiceAmount = await _unitOfWork.PreInvoiceDetailRepository.GetTotalPrice(preInvoiceHeader.Id);
+
+                    discounts = await _unitOfWork.DiscountRepository.GetAsyncWithPreInvoiceHeaderId(preInvoiceHeader.Id);
+
                     if (preInvoiceHeader == null  || preInvoiceHeader.Status== PreInvoiceHeaderStatus.Final)
                     {
                         return false;
                     }
-
-                    totalPreInvoiceAmount = await _unitOfWork.PreInvoiceDetailRepository.GetTotalPrice(preInvoiceHeader.Id);
-
-                    totalDiscountAmount = await _unitOfWork.DiscountRepository.GetTotalDiscount(preInvoiceHeader.Id);
-
                     return true;
 
                 }).WithMessage("Invalid PreInvoiceHeaderId");
@@ -50,34 +49,34 @@ namespace Test.Application.DTOs.Discount.Validator
 
             RuleFor(a => a.Amount)
                .GreaterThan(0).WithMessage("Invalid Amount")
-               .Must((dto, amount) =>
+               .Must((model, amount) =>
                {
-                   double totalAmount = amount + totalDiscountAmount;
+                   double totalAmount = amount + discounts.Where(a=>a.Id!= model.Id).Sum(a=>a.Amount);
                    return totalAmount <= totalPreInvoiceAmount;
                }).WithMessage("Discount grater than price");
 
             RuleFor(a => a.Type)
-              .IsInEnum().WithMessage("Invalid Type")
-              .Must((model, type) =>
-              {
-                  if (type == DiscountType.Row)
-                  {
-                      if (model.PreInvoiceDetailId == null)
-                      {
-                          return false;
-                      }
-                  }
-                  else
-                  {
-                      if (model.PreInvoiceDetailId != null)
-                      {
-                          return false;
-                      }
-                  }
-
-                  return true;
-              })
-              .WithMessage("In Row type detail must be send ,and in Document type detail must be ignore");
+                 .IsInEnum().WithMessage("Invalid Type")
+                 .MustAsync(async(model, type,token) =>
+                 {
+                     if (type == DiscountType.Row)
+                     {
+                         if (model.PreInvoiceDetailId == null || model.PreInvoiceDetailId <= 0)
+                         {
+                             return false;
+                         }
+                         return await _unitOfWork.PreInvoiceDetailRepository.IsExist(model.PreInvoiceDetailId.Value);
+                     }
+                     else
+                     {
+                         if (model.PreInvoiceDetailId != null)
+                         {
+                             return false;
+                         }
+                     }
+                     return true;
+                 })
+                 .WithMessage("In Row type detail must be send ,and in Document type detail must be ignore Or PreInvoiceDetailId with this id not exist");
 
 
 

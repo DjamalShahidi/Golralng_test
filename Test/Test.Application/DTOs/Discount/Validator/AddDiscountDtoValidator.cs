@@ -34,7 +34,7 @@ namespace Test.Application.DTOs.Discount.Validator
                     }
 
                     totalPreInvoiceAmount = await _unitOfWork.PreInvoiceDetailRepository.GetTotalPrice(id);
-                    totalDiscountAmount = await _unitOfWork.DiscountRepository.GetTotalDiscount(id);
+                    totalDiscountAmount = await _unitOfWork.DiscountRepository.GetTotalDiscountAmount(id);
                     return true;
 
                 }).WithMessage("Invalid PreInvoiceHeaderId");
@@ -54,16 +54,16 @@ namespace Test.Application.DTOs.Discount.Validator
              .IsInEnum().WithMessage("Invalid Type")
              .Must((model, type) =>
              {
-                 if (type==DiscountType.Row )
+                 if (type == DiscountType.Row)
                  {
-                     if (model.PreInvoiceDetailId == null)
+                     if (model.PreInvoiceDetailId == null || model.PreInvoiceDetailId <= 0)
                      {
                          return false;
                      }
                  }
                  else
                  {
-                     if (model.PreInvoiceDetailId != null)
+                     if (model.PreInvoiceDetailId != null )
                      {
                          return false;
                      }

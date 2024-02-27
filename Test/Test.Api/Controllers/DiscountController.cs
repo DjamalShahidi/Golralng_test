@@ -28,9 +28,16 @@ namespace Store.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<Response> GetDiscount([FromQuery] GetDiscount getDiscount)
+        public async Task<Response> GetDiscount([FromQuery] int? preInvoiceDetailId,int? preInvoiceHeaderId)
         {
-            return await _mediator.Send(getDiscount);
+            return await _mediator.Send(new GetDiscount()
+            {
+                Request=new GetDiscountRequestDto()
+                {
+                    PreInvoiceDetailId= preInvoiceDetailId,
+                    PreInvoiceHeaderId= preInvoiceHeaderId
+                }
+            });
         }
 
         [HttpPut]

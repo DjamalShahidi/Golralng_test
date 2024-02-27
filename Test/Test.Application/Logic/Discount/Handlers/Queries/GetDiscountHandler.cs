@@ -43,7 +43,7 @@ namespace Test.Application.Logic.PreInvoiceDetail.Handlers.Queries
                 {
                     var discounts = await _unitOfWork.DiscountRepository.GetAsyncWithPreInvoiceHeaderId(request.Request.PreInvoiceHeaderId.Value);
 
-                    var result = _mapper.Map<GetDiscountResponseDto>(discounts);
+                    var result = _mapper.Map<List<GetDiscountResponseDto>>(discounts);
 
                     return new Response()
                     {

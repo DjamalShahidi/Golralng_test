@@ -43,7 +43,7 @@ namespace Test.Application.DTOs.PreInvoiceDetail.Validator
                     }
                     return true;
 
-                }).WithMessage("NotExist PreInvoiceHeaderId");
+                }).WithMessage("NotExist PreInvoiceDeail or PreInvoiceHeader status is Final");
 
 
 
@@ -65,7 +65,7 @@ namespace Test.Application.DTOs.PreInvoiceDetail.Validator
              {
                  if (preInvoiceHeader != null)
                  {
-                     var isExist = await _unitOfWork.PreInvoiceDetailRepository.CheckDublicateProductForUpdate(preInvoiceHeader.Id, model.Id,productId);
+                     var isExist = await _unitOfWork.PreInvoiceDetailRepository.CheckDuplicateProductForUpdate(preInvoiceHeader.Id, model.Id,productId);
                      if (isExist)
                      {
                          return false;
@@ -76,7 +76,7 @@ namespace Test.Application.DTOs.PreInvoiceDetail.Validator
                  {
                      return false;
                  }
-             }).WithMessage("Dublicate product");
+             }).WithMessage("Duplicate product");
 
             RuleFor(a => a.Price)
               .GreaterThan(0).WithMessage("Invalid Price");

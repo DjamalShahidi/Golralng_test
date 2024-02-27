@@ -12,25 +12,39 @@ namespace Test.Application.DTOs.PreInvoiceHeader.Validator
             _unitOfWork = unitOfWork;
 
             RuleFor(a => a.SalesLineId)
-                   .GreaterThan(0).WithMessage("Invalid SalesLineId");
-
-            RuleFor(a => a.SellerId)
-                   .GreaterThan(0).WithMessage("Invalid SellerId")
-                   .MustAsync(async (model, sellerId, token) =>
+                   .GreaterThan(0).WithMessage("Invalid SalesLineId")
+                   .MustAsync(async (saleLineId, token) =>
                    {
-                       var isExist = await _unitOfWork.SellerRepository.IsExist(sellerId, model.SalesLineId);
+                       var isExist = await _unitOfWork.SaleLineRepository.IsExist(saleLineId);
                        if (!isExist)
                        {
                            return false;
                        }
                        return true;
-                   }).WithMessage("Not Exist SellerId in this SalesLine");
+                   }).WithMessage("SaleLine with this id not exist"); 
+
+            RuleFor(a => a.SellerId)
+                   .GreaterThan(0).WithMessage("Invalid SellerId")
+                   .MustAsync(async (model, sellerId, token) =>
+                   {
+                       var isExist = await _unitOfWork.SellerRepository.IsExist(sellerId);
+                       if (!isExist)
+                       {
+                           return false;
+                       }
+                       var haveRelation = await _unitOfWork.SellerRepository.IsExist(sellerId, model.SalesLineId);
+                       if (!haveRelation)
+                       {
+                           return false;
+                       }
+                       return true;
+                   }).WithMessage("This Seller id invalid or seller dose not belong to  this line");
 
             RuleFor(a => a.Customer.FirstName)
-             .NotNull().NotEmpty().WithMessage("Invalid Customer first name");
+                .NotNull().NotEmpty().MaximumLength(50).MaximumLength(1).WithMessage("Invalid Customer first name");
 
             RuleFor(a => a.Customer.LastName)
-           .NotNull().NotEmpty().WithMessage("Invalid Customer last name");
+           .NotNull().NotEmpty().MaximumLength(50).MaximumLength(1).WithMessage("Invalid Customer last name");
         }
 
     }

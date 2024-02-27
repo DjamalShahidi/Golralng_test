@@ -7,35 +7,45 @@ namespace Test.Application.DTOs.PreInvoiceHeader.Validator
     {
         private readonly IUnitOfWork _unitOfWork;
 
+        private readonly double MAX = 1_000_000;
+
         public UpdatePreInvoiceHeaderStatusDtoValidator(IUnitOfWork unitOfWork)
         {
-            _unitOfWork= unitOfWork;
+            _unitOfWork = unitOfWork;
 
             RuleFor(a => a.PreInvoiceHeaderId)
                        .GreaterThan(0).WithMessage("Invalid PreInvoiceHeaderId")
                        .MustAsync(async (id, token) =>
                        {
-                           var header = await _unitOfWork.PreInvoiceHeaderRepository.GetAsync(id);
-                           if (header==null)
+                           var preInvoiceHeader = await _unitOfWork.PreInvoiceHeaderRepository.GetAsync(id);
+
+                           if (preInvoiceHeader == null)
                            {
                                return false;
                            }
-                           else if (header.Status==Domain.PreInvoiceHeaderStatus.Final)
+                           if (preInvoiceHeader.Status == Domain.PreInvoiceHeaderStatus.Final)
                            {
                                return false;
                            }
-                           else
+
+                           var preDetailIsExist = await _unitOfWork.PreInvoiceDetailRepository.IsExistWithThisPreInvoiceHeaderId(id);
+
+                           if (preDetailIsExist==false)
                            {
-                               var totalPreInvoiceAmount = await _unitOfWork.PreInvoiceDetailRepository.GetFinalTotalPrice(header.CustomerId);
-                               var totalDiscountAmount = await _unitOfWork.DiscountRepository.GetFinalTotalDiscount(header.CustomerId);
-
-                               if (totalPreInvoiceAmount- totalDiscountAmount>1_000_000)
-                               {
-                                   return false;
-                               }
-                               return true;
-
+                               return false;
                            }
+
+                           var totalPreInvoiceAmount = await _unitOfWork.PreInvoiceDetailRepository.GetFinalTotalPrice(preInvoiceHeader.CustomerId);
+
+                           var totalDiscountAmount = await _unitOfWork.DiscountRepository.GetFinalTotalDiscount(preInvoiceHeader.CustomerId);
+
+                           if (totalPreInvoiceAmount - totalDiscountAmount > MAX)
+                           {
+                               return false;
+                           }
+                           return true;
+
+
                        }).WithMessage("Can not be update");
         }
 

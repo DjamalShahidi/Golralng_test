@@ -26,9 +26,12 @@ namespace Store.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<Response> GetPreInvoiceHeader([FromQuery] GetPreInvoiceHeader getProducts)
+        public async Task<Response> GetPreInvoiceHeader([FromQuery] int? id,[FromQuery] int from=0, [FromQuery] int to=10)
         {
-            return await _mediator.Send(getProducts);
+            return await _mediator.Send( new GetPreInvoiceHeader()
+            {
+                Request =new GetPreInvoiceHeaderRequestDto(id,from,to)
+            });
         }
 
         [HttpPut,Route("status")]
@@ -56,7 +59,7 @@ namespace Store.Api.Controllers
             {
                 Request = new DeletePreInvoiceHeaderDto()
                 {
-                    PreInvoiceHeaderId = id
+                    Id = id
                 }
             });
         }

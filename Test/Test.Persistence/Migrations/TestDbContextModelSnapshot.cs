@@ -45,7 +45,7 @@ namespace Test.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("Test.Domain.Discount", b =>
@@ -77,7 +77,7 @@ namespace Test.Persistence.Migrations
 
                     b.HasIndex("PreInvoiceHeaderId");
 
-                    b.ToTable("Discounts");
+                    b.ToTable("Discounts", (string)null);
                 });
 
             modelBuilder.Entity("Test.Domain.PreInvoiceDetail", b =>
@@ -109,7 +109,7 @@ namespace Test.Persistence.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("PreInvoiceDetails");
+                    b.ToTable("PreInvoiceDetails", (string)null);
                 });
 
             modelBuilder.Entity("Test.Domain.PreInvoiceHeader", b =>
@@ -143,7 +143,7 @@ namespace Test.Persistence.Migrations
 
                     b.HasIndex("SellerId");
 
-                    b.ToTable("PreInvoiceHeaders");
+                    b.ToTable("PreInvoiceHeaders", (string)null);
                 });
 
             modelBuilder.Entity("Test.Domain.Product", b =>
@@ -164,7 +164,7 @@ namespace Test.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.HasData(
                         new
@@ -781,7 +781,7 @@ namespace Test.Persistence.Migrations
 
                     b.HasIndex("SalesLineId");
 
-                    b.ToTable("ProductSaleLines");
+                    b.ToTable("ProductSaleLines", (string)null);
 
                     b.HasData(
                         new
@@ -1304,7 +1304,7 @@ namespace Test.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SalesLines");
+                    b.ToTable("SalesLines", (string)null);
 
                     b.HasData(
                         new
@@ -1367,7 +1367,7 @@ namespace Test.Persistence.Migrations
 
                     b.HasIndex("SalesLineId");
 
-                    b.ToTable("Sellers");
+                    b.ToTable("Sellers", (string)null);
 
                     b.HasData(
                         new

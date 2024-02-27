@@ -1,8 +1,9 @@
-﻿using Test.Domain;
+﻿using Test.Application.DTOs.Common;
+using Test.Domain;
 
 namespace Test.Application.DTOs.Discount
 {
-    public class GetDiscountResponseDto
+    public record GetDiscountResponseDto :BaseDto
     {
         public int PreInvoiceHeaderId { get; set; }
 

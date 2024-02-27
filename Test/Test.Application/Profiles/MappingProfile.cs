@@ -22,7 +22,9 @@ namespace Test.Application.Profiles
             CreateMap<Product, GetPreInvoiceDetailDtoProduct>().ReverseMap();
             CreateMap<PreInvoiceDetail, GetPreInvoiceDetailDto>().ReverseMap();
             CreateMap<GetDiscountResponseDto, Discount>().ReverseMap();
-
+            CreateMap<Customer, UpdatePreInvoiceHeaderDtoCustomer>().ReverseMap();
+            CreateMap<PreInvoiceDetail, UpdatePreInvoiceDetailDto>().ReverseMap();
         }
+        
     }
 }

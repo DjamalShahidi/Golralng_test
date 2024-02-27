@@ -51,7 +51,7 @@ namespace Test.Application.DTOs.PreInvoiceDetail.Validator
              {
                  if (preInvoiceHeader != null)
                  {
-                     var isExist = await _unitOfWork.PreInvoiceDetailRepository.CheckDublicateProductForAdd(preInvoiceHeader.Id, id);
+                     var isExist = await _unitOfWork.PreInvoiceDetailRepository.CheckDuplicateProductForAdd(preInvoiceHeader.Id, id);
                      if (isExist)
                      {
                          return false;
