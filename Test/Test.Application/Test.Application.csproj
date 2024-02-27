@@ -13,11 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Logic\Discount\Handlers\Queries\" />
-    <Folder Include="Logic\Discount\Requests\Queries\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Test.Domain\Test.Domain.csproj" />
   </ItemGroup>
 

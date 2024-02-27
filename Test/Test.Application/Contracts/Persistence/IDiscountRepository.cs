@@ -1,4 +1,5 @@
-﻿using Test.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using Test.Domain;
 
 namespace Test.Application.Contracts.Persistence
 {
@@ -7,5 +8,11 @@ namespace Test.Application.Contracts.Persistence
         Task<double> GetTotalDiscount(int preInvoiceHeaderId);
 
         Task<double> GetFinalTotalDiscount(int customerId);
+
+        Task<List<Discount>> GetAsyncWithPreInvoiceHeaderId(int preInvoiceHeaderId);
+
+        Task<Discount> GetAsyncWithPreInvoiceDetailId(int preInvoiceDeatilId);
+
+        Task<Discount> GetAsyncWithHeaderAndDetailIds(int preInvoiceHeaderId, int preInvoiceDeatilId);
     }
 }

@@ -24,5 +24,19 @@ namespace Test.Persistence.Repositories
                                                     && a.PreInvoiceHeader.Status == PreInvoiceHeaderStatus.Final)
                                                    .SumAsync(a => a.Amount);
         }
+
+        public async Task<List<Discount>> GetAsyncWithPreInvoiceHeaderId(int preInvoiceHeaderId)
+        {
+            return await _context.Discounts.Where(a => a.PreInvoiceHeaderId == preInvoiceHeaderId).ToListAsync();
+        }
+
+        public async Task<Discount> GetAsyncWithPreInvoiceDetailId(int preInvoiceDeatilId)
+        {
+            return await _context.Discounts.FirstOrDefaultAsync(a => a.PreInvoiceDetailId == preInvoiceDeatilId);
+        }
+        public async Task<Discount> GetAsyncWithHeaderAndDetailIds(int preInvoiceHeaderId,int preInvoiceDeatilId)
+        {
+            return await _context.Discounts.FirstOrDefaultAsync(a => a.PreInvoiceDetailId == preInvoiceDeatilId && a.PreInvoiceHeaderId == preInvoiceHeaderId);
+        }
     }
 }
