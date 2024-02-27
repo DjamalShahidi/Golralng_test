@@ -1,4 +1,6 @@
-﻿namespace Test.Application.Contracts.Persistence
+﻿using Microsoft.EntityFrameworkCore.Storage;
+
+namespace Test.Application.Contracts.Persistence
 {
     public interface IUnitOfWork : IDisposable
     {
@@ -16,8 +18,10 @@
 
         ISellerRepository SellerRepository { get; }
 
+        ICustomerRepository CustomerRepository { get; }
+
         Task Save(CancellationToken cancellationToken);
 
-        //Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
+        Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
     }
 }

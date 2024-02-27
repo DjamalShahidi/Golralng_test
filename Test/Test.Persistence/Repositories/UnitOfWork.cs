@@ -21,6 +21,8 @@ namespace Test.Persistence.Repositories
 
         public ISellerRepository SellerRepository => _sellerRepository ??= new SellerRepository(_context);
 
+        public ICustomerRepository CustomerRepository => _customerRepository ??= new CustomerRepository(_context);
+
         private IDiscountRepository _dscountRepository;
         private IPreInvoiceHeaderRepository _preInvoiceHeaderRepository;
         private IPreInvoiceDetailRepository _preInvoiceDetailRepository;
@@ -28,6 +30,7 @@ namespace Test.Persistence.Repositories
         private IProductRepository _productRepository;
         private IProductSaleLineRepository _productSaleLineRepository;
         private ISellerRepository _sellerRepository;
+        private ICustomerRepository _customerRepository;
 
 
         public UnitOfWork(TestDbContext context)

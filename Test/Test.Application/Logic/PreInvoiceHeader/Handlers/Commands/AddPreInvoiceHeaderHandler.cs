@@ -36,9 +36,49 @@ namespace Test.Application.Logic.PreInvoiceHeader.Handlers.Commands
 
             var preInvoiceHeader = _mapper.Map<Domain.PreInvoiceHeader>(request.Request);
 
-            preInvoiceHeader = await _unitOfWork.PreInvoiceHeaderRepository.AddAsync(preInvoiceHeader);
+            preInvoiceHeader.Customer = null;
 
-            await _unitOfWork.Save(cancellationToken);
+            var customer = _mapper.Map<Domain.Customer>(request.Request.Customer);
+
+            var dbCusomer = await _unitOfWork.CustomerRepository.GetAsyncByName(customer.FirstName, customer.LastName);
+
+            using (var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken))
+            {
+                try
+                {
+
+                    if (dbCusomer != null)
+                    {
+                        preInvoiceHeader.CustomerId = dbCusomer.Id;
+                    }
+                    else
+                    {
+                        await _unitOfWork.CustomerRepository.AddAsync(customer);
+
+                        await _unitOfWork.Save(cancellationToken);
+
+                        preInvoiceHeader.CustomerId = customer.Id;
+                    }
+
+                    preInvoiceHeader = await _unitOfWork.PreInvoiceHeaderRepository.AddAsync(preInvoiceHeader);
+
+                    await _unitOfWork.Save(cancellationToken);
+
+                    await transaction.CommitAsync(cancellationToken);
+
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync(cancellationToken);
+                    return new Response()
+                    {
+                        IsSuccess = false,
+                        ErrorMessages=new List<string> { ex.Message }
+                    };
+                }
+            }
+
+
 
             return new Response()
             {

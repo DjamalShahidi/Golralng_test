@@ -24,8 +24,13 @@ namespace Test.Application.DTOs.PreInvoiceHeader._ٰValidator
                            return false;
                        }
                        return true;
-                   }).WithMessage("Not Exist SellerId in this SalesLine"); ;
+                   }).WithMessage("Not Exist SellerId in this SalesLine");
 
+            RuleFor(a => a.Customer.FirstName)
+             .NotNull().NotEmpty().WithMessage("Invalid Customer first name");
+
+            RuleFor(a => a.Customer.LastName)
+           .NotNull().NotEmpty().WithMessage("Invalid Customer last name");
         }
 
     }

@@ -2,7 +2,6 @@
 using Test.Application.DTOs.Discount;
 using Test.Application.DTOs.PreInvoiceHeader;
 using Test.Application.DTOs.SalesLine;
-using Test.Application.Logic.PreInvoiceHeader.Requests.Commands;
 using Test.Domain;
 
 namespace Test.Application.Profiles
@@ -16,21 +15,7 @@ namespace Test.Application.Profiles
             CreateMap<Discount, AddDiscountDto>().ReverseMap();
             CreateMap<Product, GetSaleLineDtoProduct>().ReverseMap();
             CreateMap<Seller, GetSaleLineSeller>().ReverseMap();
-            
-
-            //CreateMap<AddFeatureDto, Feature>().ForMember(dest => dest.Type, opt => opt.MapFrom(src => MapValueType(src.Value))).ReverseMap();
-            //CreateMap<GetFeatureDto, Feature>().ReverseMap();
-            //CreateMap<AddCategoryDto, Category>().ReverseMap();
-            //CreateMap<AddProductDto, Product>().ReverseMap();
-            //CreateMap<GetCategoryDto, Category>().ReverseMap();
-            //CreateMap<GetProductDto, Product>().ReverseMap();
-            //CreateMap<UserDto, ApplicationUser>().ReverseMap();
-            //CreateMap<LoginRequestDto, ApplicationUser>().ReverseMap();
-            //CreateMap<LoginResponseDTO, ApplicationUser>().ReverseMap();
-            //CreateMap<RegisterationRequestDTO, ApplicationUser>().ReverseMap();
-
-
-
+            CreateMap<Customer, AddPreInvoiceHeaderDtoCustomer  >().ReverseMap();
 
         }
     }

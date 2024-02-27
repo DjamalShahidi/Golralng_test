@@ -31,7 +31,7 @@ namespace Test.Application.DTOs.PreInvoiceHeader._ٰValidator
                     }
                     return true;
 
-                }).WithMessage("Invalid PreInvoiceHeaderId");
+                }).WithMessage("NotExist PreInvoiceHeaderId");
 
 
 
@@ -39,20 +39,32 @@ namespace Test.Application.DTOs.PreInvoiceHeader._ٰValidator
              .GreaterThan(0).WithMessage("Invalid ProductId")
              .MustAsync(async (id, token) =>
                  {
-                     var isExist = await _unitOfWork.ProductSaleLineRepository.IsExist(id, preInvoiceHeader.SalesLineId);
-                     return isExist;
-
+                     if (preInvoiceHeader!=null)
+                     {
+                         var isExist = await _unitOfWork.ProductSaleLineRepository.IsExist(id, preInvoiceHeader.SalesLineId);
+                         return isExist;
+                     }
+                     else
+                     {
+                         return false;
+                     }
                  }).WithMessage("Not Exist product in this line")
              .MustAsync(async (id, token) =>
              {
-                 var isExist = await _unitOfWork.PreInvoiceDetailRepository.DublicateProduct(id, preInvoiceHeader.Id);
-                 if (isExist)
+                 if (preInvoiceHeader != null)
+                 {
+                     var isExist = await _unitOfWork.PreInvoiceDetailRepository.DublicateProduct(preInvoiceHeader.Id, id);
+                     if (isExist)
+                     {
+                         return false;
+                     }
+                     return true;
+                 }
+                 else
                  {
                      return false;
                  }
-                 return true;
-
-             }).WithMessage("Not Exist product in this line");
+             }).WithMessage("Dublicate product");
 
             RuleFor(a => a.Price)
               .GreaterThan(0).WithMessage("Invalid Price");
