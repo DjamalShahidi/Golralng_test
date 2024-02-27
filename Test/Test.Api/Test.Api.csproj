@@ -14,4 +14,9 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Test.Application\Test.Application.csproj" />
+    <ProjectReference Include="..\Test.Persistence\Test.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>
