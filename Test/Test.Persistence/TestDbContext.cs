@@ -30,7 +30,14 @@ namespace Test.Persistence
             return base.SaveChangesAsync(cancellationToken);
         }
 
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
+        public DbSet<PreInvoiceDetail> PreInvoiceDetails { get; set; }
+        public DbSet<PreInvoiceHeader> PreInvoiceHeaders { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductSaleLine> ProductSaleLines { get; set; }
+        public DbSet<SalesLine> SalesLines { get; set; }
+        public DbSet<Seller> Sellers { get; set; }
     }
 
 }

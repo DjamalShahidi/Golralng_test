@@ -1,4 +1,5 @@
-﻿using Test.Domain.Common;
+﻿using System.ComponentModel.DataAnnotations;
+using Test.Domain.Common;
 
 namespace Test.Domain
 {

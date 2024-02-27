@@ -1,4 +1,5 @@
-﻿using Test.Domain.Common;
+﻿using System.ComponentModel.DataAnnotations;
+using Test.Domain.Common;
 
 namespace Test.Domain
 {
@@ -9,6 +10,5 @@ namespace Test.Domain
         public string LastName { get; set; }
 
         public List<PreInvoiceHeader> PreInvoiceHeaders { get; set; }
-
     }
 }
