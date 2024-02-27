@@ -12,7 +12,7 @@ using Test.Persistence;
 namespace Test.Persistence.Migrations
 {
     [DbContext(typeof(TestDbContext))]
-    [Migration("20240227063126_init")]
+    [Migration("20240227103545_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -69,6 +69,9 @@ namespace Test.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("PreInvoiceHeaderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

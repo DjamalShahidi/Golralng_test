@@ -13,5 +13,10 @@ namespace Test.Persistence.Repositories
             this._context = context;
         }
 
+        public async Task<double> GetTotalDiscount(int preInvoiceHeaderId)
+        {
+           return await _context.Discounts.Where(a => a.PreInvoiceHeaderId == preInvoiceHeaderId).SumAsync(a => a.Amount);
+        }
+
     }
 }

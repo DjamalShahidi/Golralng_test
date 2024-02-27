@@ -173,6 +173,7 @@ namespace Test.Persistence.Migrations
                     PreInvoiceHeaderId = table.Column<int>(type: "int", nullable: false),
                     PreInvoiceDetailId = table.Column<int>(type: "int", nullable: true),
                     Amount = table.Column<double>(type: "float", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>

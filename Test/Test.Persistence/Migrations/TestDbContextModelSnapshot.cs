@@ -68,6 +68,9 @@ namespace Test.Persistence.Migrations
                     b.Property<int>("PreInvoiceHeaderId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PreInvoiceDetailId");

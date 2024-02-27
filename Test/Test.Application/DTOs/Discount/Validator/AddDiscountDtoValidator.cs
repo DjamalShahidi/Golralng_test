@@ -1,11 +1,5 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Test.Application.Contracts.Persistence;
-using Test.Application.DTOs.PreInvoiceHeader;
 using Test.Domain;
 
 namespace Test.Application.DTOs.Discount.Validator
@@ -18,45 +12,55 @@ namespace Test.Application.DTOs.Discount.Validator
         {
             _unitOfWork = unitOfWork;
 
-            //RuleFor(a => a.PreInvoiceDetailId)
-            // .GreaterThan(0).WithMessage("Invalid ProductId");
+            double totalPreInvoiceAmount = 0;
+
+            double totalDiscountAmount = 0;
+
 
             RuleFor(a => a.PreInvoiceHeaderId)
-              .GreaterThan(0).WithMessage("Invalid PreInvoiceHeaderId");
+                .GreaterThan(0).WithMessage("Invalid PreInvoiceHeaderId")
+                .MustAsync(async (id, token) =>
+                {
+
+                    var isExist = await _unitOfWork.PreInvoiceHeaderRepository.IsExist(id);
+                    if (isExist==false)
+                    {
+                        return false;
+                    }
+
+                    totalPreInvoiceAmount = await _unitOfWork.PreInvoiceDetailRepository.GetTotalPrice(id);
+                    totalDiscountAmount = await _unitOfWork.DiscountRepository.GetTotalDiscount(id);
+                    return true;
+
+                }).WithMessage("Invalid PreInvoiceHeaderId");
+
+
+            RuleFor(a => a.Amount)
+               .GreaterThan(0).WithMessage("Invalid Amount")
+               .Must((dto, amount) =>
+               {
+                   double totalAmount = amount + totalDiscountAmount;
+                   return totalAmount <= totalPreInvoiceAmount;
+               }).WithMessage("Total amount exceeds ");
+
+
+
+            RuleFor(a => a.Type)
+             .IsInEnum().WithMessage("Invalid Type")
+             .When(a => a.Type == DiscountType.Row)
+             .Must((dto, type) => dto.PreInvoiceDetailId.HasValue)
+             .WithMessage("PreInvoiceDetailId is required for DiscountType.Row")
+             .When(a => a.Type == DiscountType.Document)
+             .Must((dto, type) => dto.PreInvoiceDetailId == null)
+             .WithMessage("PreInvoiceDetailId must be null for DiscountType.Document");
+
+
+    
 
             RuleFor(a => a.Amount)
               .GreaterThan(0).WithMessage("Invalid Amount");
 
-            //RuleFor(a => a.Type)
-            //     .IsInEnum(DiscountType).WithMessage("Invalid Type");
-
-            //RuleFor(a => a.GetHashCode)
-            // .NotNull().NotEmpty().WithMessage("Code must be send");
-
-            //RuleFor(a => a.CategoryId)
-            //     .GreaterThan(0).WithMessage("Invalid CategoryId")
-            //     .MustAsync(async (id, token) =>
-            //     {
-            //         var isExist = await _unitOfWork.CategoryRepository.IsExist(id);
-            //         return isExist;
-
-            //     }).WithMessage("Invalid CategoryId");
-
-            //RuleFor(a => a.FeatureIds)
-            //  .NotNull().NotEmpty().WithMessage("Invalid FeatureId")
-            //  .MustAsync(async (ids, token) =>
-            //  {
-            //      foreach (var id in ids)
-            //      {
-            //          var isExist = await _unitOfWork.FeaturesRepository.IsExist(id);
-            //          if (!isExist)
-            //          {
-            //              return false;
-            //          }
-            //      }
-
-            //      return true;
-            //  }).WithMessage("Invalid FeatureId");
+            
         }
     }
 }
