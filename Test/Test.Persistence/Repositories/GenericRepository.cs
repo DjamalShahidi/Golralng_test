@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using Test.Application.Contracts.Persistence;
 
 namespace Test.Persistence.Repositories
@@ -31,6 +32,11 @@ namespace Test.Persistence.Repositories
             return await _context.Set<T>().ToListAsync();
         }
 
+        public async Task<List<T>> GetListAsync(int from,int count)
+        {
+            return await _context.Set<T>().Skip(from).Take(count).ToListAsync();
+        }
+
         public async Task<bool> IsExist(int id)
         {
             var enity=await GetAsync(id);
@@ -46,6 +52,37 @@ namespace Test.Persistence.Repositories
         public void Delete(T entity)
         {
             _context.Remove(entity);
+        }
+
+
+        public async Task<List<T>> GetListAsync(Expression<Func<T, bool>> filter, int? from = null, int? to = null)
+        {
+            IQueryable<T> query = dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            query = query.Where(filter);
+
+            if (from != null || to != null)
+            {
+                if (from == null)
+                {
+                    from = 0;
+                }
+                else if (to == null)
+                {
+                    to = 10;
+                }
+
+                query = query.Skip(from.Value).Take(to.Value);
+
+            }
+
+            return await query.ToListAsync();
+
         }
     }
 }

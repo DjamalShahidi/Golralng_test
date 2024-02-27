@@ -1,4 +1,6 @@
-﻿namespace Test.Application.Contracts.Persistence
+﻿using System.Linq.Expressions;
+
+namespace Test.Application.Contracts.Persistence
 {
     public interface IGenericRepository<T> where T : class
     {
@@ -13,5 +15,10 @@
         void Delete(T entity);
 
         Task<bool> IsExist(int id);
+
+        Task<List<T>> GetListAsync(int from, int count);
+
+
+        Task<List<T>> GetListAsync(Expression<Func<T, bool>> filter, int? from = null, int? to = null);
     }
 }
