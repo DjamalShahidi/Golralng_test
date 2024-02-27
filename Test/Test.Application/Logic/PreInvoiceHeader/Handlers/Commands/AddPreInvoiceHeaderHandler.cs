@@ -23,8 +23,6 @@ namespace Test.Application.Logic.PreInvoiceHeader.Handlers.Commands
         {
             try
             {
-
-
                 var validator = new AddPreInvoiceHeaderDtoValidator(_unitOfWork);
 
                 var validatorResult = await validator.ValidateAsync(request.Request);
@@ -95,8 +93,8 @@ namespace Test.Application.Logic.PreInvoiceHeader.Handlers.Commands
             {
                 return new Response()
                 {
-                    IsSuccess = true,
-                    ErrorMessages = new List<string> { ex.Message }
+                    IsSuccess = false,
+                    ErrorMessages = [ex.Message]
                 };
             }
         }

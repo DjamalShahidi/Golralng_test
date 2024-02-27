@@ -55,7 +55,7 @@ namespace Test.Application.Logic.PreInvoiceDetail.Handlers.Commands
                 return new Response()
                 {
                     IsSuccess = false,
-                    ErrorMessages = new List<string> { ex.Message }
+                    ErrorMessages = [ex.Message]
                 };
             }
         }

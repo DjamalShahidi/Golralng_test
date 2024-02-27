@@ -4,6 +4,7 @@ using Store.Application.Responses;
 using Test.Application.Contracts.Persistence;
 using Test.Application.DTOs.Discount.Validator;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Commands;
+using Test.Domain;
 
 namespace Test.Application.Logic.Discount.Handlers.Commands
 {
@@ -21,32 +22,44 @@ namespace Test.Application.Logic.Discount.Handlers.Commands
 
         public async Task<Response> Handle(UpdateDiscount request, CancellationToken cancellationToken)
         {
-            var validator = new UpdateDiscountDtoValidator(_unitOfWork);
-            var validatorResult = await validator.ValidateAsync(request.Request);
+            try
+            {
 
-            if (validatorResult.IsValid == false)
+                var validator = new UpdateDiscountDtoValidator(_unitOfWork);
+                var validatorResult = await validator.ValidateAsync(request.Request);
+
+                if (validatorResult.IsValid == false)
+                {
+                    return new Response()
+                    {
+                        ErrorMessages = validatorResult.Errors.Select(a => a.ErrorMessage).ToList(),
+                        IsSuccess = false,
+                        Result = null
+                    };
+                }
+
+                var discount = await _unitOfWork.DiscountRepository.GetAsync(request.Request.Id);
+
+                discount = _mapper.Map<Domain.Discount>(request.Request);
+
+                _unitOfWork.DiscountRepository.Update(discount);
+
+                await _unitOfWork.Save(cancellationToken);
+
+                return new Response()
+                {
+                    IsSuccess = true,
+                    Result = discount.Id
+                };
+            }
+            catch (Exception ex)
             {
                 return new Response()
                 {
-                    ErrorMessages = validatorResult.Errors.Select(a => a.ErrorMessage).ToList(),
                     IsSuccess = false,
-                    Result = null
+                    ErrorMessages = [ex.Message]
                 };
             }
-
-            var discount = await _unitOfWork.DiscountRepository.GetAsync(request.Request.Id);
-
-            discount = _mapper.Map<Domain.Discount>(request.Request);
-
-            _unitOfWork.DiscountRepository.Update(discount);
-
-            await _unitOfWork.Save(cancellationToken);
-
-            return new Response()
-            {
-                IsSuccess = true,
-                Result = discount.Id
-            };
         }
     }
 }

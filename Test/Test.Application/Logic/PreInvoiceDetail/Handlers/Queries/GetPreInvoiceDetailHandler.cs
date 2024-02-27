@@ -58,8 +58,8 @@ namespace Test.Application.Logic.PreInvoiceDetail.Handlers.Queries
             {
                 return new Response()
                 {
-                    IsSuccess = true,
-                    ErrorMessages = new List<string> { ex.Message }
+                    IsSuccess = false,
+                    ErrorMessages = [ex.Message]
                 };
             }
         }

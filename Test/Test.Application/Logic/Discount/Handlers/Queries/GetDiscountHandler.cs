@@ -24,47 +24,59 @@ namespace Test.Application.Logic.PreInvoiceDetail.Handlers.Queries
 
         public async Task<Response> Handle(GetDiscount request, CancellationToken cancellationToken)
         {
-            if (request.PreInvoiceHeaderId!=null && request.PreInvoiceDetailId!=null)
+            try
             {
-                var discount = await _unitOfWork.DiscountRepository.GetAsyncWithHeaderAndDetailIds(request.PreInvoiceHeaderId.Value, request.PreInvoiceDetailId.Value);
 
-                var result = _mapper.Map<GetDiscountDto>(discount);
+                if (request.Request.PreInvoiceHeaderId != null && request.Request.PreInvoiceDetailId != null)
+                {
+                    var discount = await _unitOfWork.DiscountRepository.GetAsyncWithHeaderAndDetailIds(request.Request.PreInvoiceHeaderId.Value, request.Request.PreInvoiceDetailId.Value);
 
+                    var result = _mapper.Map<GetDiscountResponseDto>(discount);
+
+                    return new Response()
+                    {
+                        IsSuccess = true,
+                        Result = result
+                    };
+                }
+                else if (request.Request.PreInvoiceHeaderId != null)
+                {
+                    var discounts = await _unitOfWork.DiscountRepository.GetAsyncWithPreInvoiceHeaderId(request.Request.PreInvoiceHeaderId.Value);
+
+                    var result = _mapper.Map<GetDiscountResponseDto>(discounts);
+
+                    return new Response()
+                    {
+                        IsSuccess = true,
+                        Result = result
+                    };
+                }
+                else if (request.Request.PreInvoiceDetailId != null)
+                {
+                    var discount = await _unitOfWork.DiscountRepository.GetAsyncWithPreInvoiceDetailId(request.Request.PreInvoiceDetailId.Value);
+
+                    var result = _mapper.Map<GetDiscountResponseDto>(discount);
+
+                    return new Response()
+                    {
+                        IsSuccess = true,
+                        Result = result
+                    };
+                }
                 return new Response()
                 {
-                    IsSuccess = true,
-                    Result = result
+                    IsSuccess = false,
+                    Result = null
                 };
             }
-           else if (request.PreInvoiceHeaderId!=null )
+            catch (Exception ex)
             {
-                var discounts = await _unitOfWork.DiscountRepository.GetAsyncWithPreInvoiceHeaderId(request.PreInvoiceHeaderId.Value);
-
-                var result = _mapper.Map<GetDiscountDto>(discounts);
-
                 return new Response()
                 {
-                    IsSuccess = true,
-                    Result = result
+                    IsSuccess = false,
+                    ErrorMessages = [ex.Message]
                 };
             }
-            else if (request.PreInvoiceDetailId!=null)
-            {
-                var discount = await _unitOfWork.DiscountRepository.GetAsyncWithPreInvoiceDetailId(request.PreInvoiceDetailId.Value);
-
-                var result = _mapper.Map<GetDiscountDto>(discount);
-
-                return new Response()
-                {
-                    IsSuccess = true,
-                    Result = result
-                };
-            }
-            return new Response()
-            {
-                IsSuccess = false,
-                Result = null
-            };
         }
     }
 }

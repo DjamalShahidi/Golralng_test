@@ -2,7 +2,7 @@
 
 namespace Test.Application.DTOs.Discount
 {
-    public class GetDiscountDto
+    public class GetDiscountResponseDto
     {
         public int PreInvoiceHeaderId { get; set; }
 
