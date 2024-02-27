@@ -13,20 +13,24 @@ namespace Test.Persistence.Repositories
 
         public IPreInvoiceDetailRepository PreInvoiceDetailRepository => _preInvoiceDetailRepository ??= new PreInvoiceDetailRepository(_context);
 
+        public ISaleLineRepository SaleLineRepository => _saleLineRepository ??= new SaleLineRepository(_context);
+
+        public IProductRepository ProductRepository => _productRepository ??= new ProductRepository(_context);
+
+        public IProductSaleLineRepository ProductSaleLineRepository => _productSaleLineRepository ??= new ProductSaleLineRepository(_context);
+
         private IDiscountRepository _dscountRepository;
         private IPreInvoiceHeaderRepository _preInvoiceHeaderRepository;
         private IPreInvoiceDetailRepository _preInvoiceDetailRepository;
-            
+        private ISaleLineRepository _saleLineRepository;
+        private IProductRepository _productRepository;
+        private IProductSaleLineRepository _productSaleLineRepository;
 
 
         public UnitOfWork(TestDbContext context)
         {
             this._context = context;
         }
-
-        //public IProductRepository ProductRepository => _productRepository ??= new ProductRepository(_context);
-
-
 
         public void Dispose()
         {

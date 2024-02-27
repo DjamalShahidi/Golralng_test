@@ -4,11 +4,11 @@ using Test.Domain;
 
 namespace Test.Persistence.Repositories
 {
-    public class ProductRepository : GenericRepository<Product>, IProductRepository
+    public class SaleLineRepository : GenericRepository<SalesLine>, ISaleLineRepository
     {
         private readonly TestDbContext _context;
 
-        public ProductRepository(TestDbContext context) : base(context)
+        public SaleLineRepository(TestDbContext context) : base(context)
         {
             this._context = context;
         }
