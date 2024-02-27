@@ -7,8 +7,16 @@ namespace Test.Persistence.Repositories
     {
         private readonly TestDbContext _context;
 
-        //private IProductRepository _productRepository;
+        public IDiscountRepository DiscountRepository => _dscountRepository ??= new DiscountRepository(_context);
 
+        public IPreInvoiceHeaderRepository PreInvoiceHeaderRepository => _preInvoiceHeaderRepository ??= new PreInvoiceHeaderRepository(_context);
+
+        public IPreInvoiceDetailRepository PreInvoiceDetailRepository => _preInvoiceDetailRepository ??= new PreInvoiceDetailRepository(_context);
+
+        private IDiscountRepository _dscountRepository;
+        private IPreInvoiceHeaderRepository _preInvoiceHeaderRepository;
+        private IPreInvoiceDetailRepository _preInvoiceDetailRepository;
+            
 
 
         public UnitOfWork(TestDbContext context)

@@ -2,17 +2,11 @@
 {
     public interface IUnitOfWork : IDisposable
     {
-        //ICategoryRepository CategoryRepository { get; }
+        IDiscountRepository DiscountRepository { get; }
 
-        //IFeaturesRepository FeaturesRepository { get; }
+        IPreInvoiceHeaderRepository PreInvoiceHeaderRepository { get; }
 
-        //ICategoryFeatureRepository CategoryFeatureRepository { get; }
-
-        //IProductFeatureRepository ProductFeatureRepository { get; }
-
-        //IUserRepository UserRepository { get; }
-
-        //IProductRepository ProductRepository { get; }
+        IPreInvoiceDetailRepository PreInvoiceDetailRepository { get; }
 
         Task Save(CancellationToken cancellationToken);
 

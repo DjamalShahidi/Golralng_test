@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Test.Application.Contracts.Persistence;
-using Test.Persistence;
 
 namespace Test.Persistence.Repositories
 {
@@ -22,12 +21,6 @@ namespace Test.Persistence.Repositories
             return entity;
         }
 
-        public async Task<List<T>> AddListAsync(List<T> entities)
-        {
-            await _context.AddRangeAsync(entities);
-            return entities;
-        }
-
         public async Task<T> GetAsync(int id)
         {
             return await _context.Set<T>().FindAsync(id);
@@ -43,6 +36,16 @@ namespace Test.Persistence.Repositories
             var enity=await GetAsync(id);
 
             return enity != null;
+        }
+
+        public void Update(T entity)
+        {
+            _context.Update(entity);
+        }
+
+        public void Delete(T entity)
+        {
+            _context.Remove(entity);
         }
     }
 }
