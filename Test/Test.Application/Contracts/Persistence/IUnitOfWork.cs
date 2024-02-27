@@ -14,6 +14,8 @@
 
         IProductSaleLineRepository ProductSaleLineRepository { get; }
 
+        ISellerRepository SellerRepository { get; }
+
         Task Save(CancellationToken cancellationToken);
 
         //Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);

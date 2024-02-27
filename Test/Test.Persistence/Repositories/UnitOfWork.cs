@@ -19,12 +19,15 @@ namespace Test.Persistence.Repositories
 
         public IProductSaleLineRepository ProductSaleLineRepository => _productSaleLineRepository ??= new ProductSaleLineRepository(_context);
 
+        public ISellerRepository SellerRepository => _sellerRepository ??= new SellerRepository(_context);
+
         private IDiscountRepository _dscountRepository;
         private IPreInvoiceHeaderRepository _preInvoiceHeaderRepository;
         private IPreInvoiceDetailRepository _preInvoiceDetailRepository;
         private ISaleLineRepository _saleLineRepository;
         private IProductRepository _productRepository;
         private IProductSaleLineRepository _productSaleLineRepository;
+        private ISellerRepository _sellerRepository;
 
 
         public UnitOfWork(TestDbContext context)
