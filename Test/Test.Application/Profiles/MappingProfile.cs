@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Test.Application.DTOs.PreInvoiceHeader;
+using Test.Domain;
 
 namespace Test.Application.Profiles
 {
@@ -6,6 +8,8 @@ namespace Test.Application.Profiles
     {
         public MappingProfile()
         {
+            CreateMap<PreInvoiceHeader, AddPreInvoiceHeaderDto>().ReverseMap();
+
             //CreateMap<AddFeatureDto, Feature>().ForMember(dest => dest.Type, opt => opt.MapFrom(src => MapValueType(src.Value))).ReverseMap();
             //CreateMap<GetFeatureDto, Feature>().ReverseMap();
             //CreateMap<AddCategoryDto, Category>().ReverseMap();
