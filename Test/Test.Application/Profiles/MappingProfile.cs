@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Test.Application.DTOs.Discount;
+using Test.Application.DTOs.PreInvoiceDetail;
 using Test.Application.DTOs.PreInvoiceHeader;
 using Test.Application.DTOs.SalesLine;
 using Test.Domain;

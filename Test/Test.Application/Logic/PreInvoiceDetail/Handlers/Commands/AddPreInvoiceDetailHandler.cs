@@ -1,13 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using Store.Application.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Test.Application.Contracts.Persistence;
-using Test.Application.DTOs.PreInvoiceHeader._ٰValidator;
+using Test.Application.DTOs.PreInvoiceDetail.Validator;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Commands;
 
 namespace Test.Application.Logic.PreInvoiceDetail.Handlers.Commands

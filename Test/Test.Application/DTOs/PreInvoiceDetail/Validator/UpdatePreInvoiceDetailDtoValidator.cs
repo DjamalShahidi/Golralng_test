@@ -8,7 +8,7 @@ using Test.Application.Contracts.Persistence;
 using Test.Application.DTOs.PreInvoiceHeader;
 using Test.Domain;
 
-namespace Test.Application.DTOs.PreInvoiceDetail._ٰValidator
+namespace Test.Application.DTOs.PreInvoiceDetail.Validator
 {
     public class UpdatePreInvoiceDetailDtoValidator : AbstractValidator<UpdatePreInvoiceDetailDto>
     {

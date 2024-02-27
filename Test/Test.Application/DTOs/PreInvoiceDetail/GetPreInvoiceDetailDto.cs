@@ -1,6 +1,6 @@
 ﻿using Test.Application.DTOs.Common;
 
-namespace Test.Application.DTOs.PreInvoiceHeader
+namespace Test.Application.DTOs.PreInvoiceDetail
 {
     public record GetPreInvoiceDetailDto : BaseDto
     {

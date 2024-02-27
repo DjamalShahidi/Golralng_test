@@ -1,4 +1,4 @@
-﻿namespace Test.Application.DTOs.PreInvoiceHeader
+﻿namespace Test.Application.DTOs.PreInvoiceDetail
 {
     public class AddPreInvoiceDetailDto
     {

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Store.Application.Responses;
+using Test.Application.DTOs.PreInvoiceDetail;
 using Test.Application.Logic.PreInvoiceDetail.Requests.Commands;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Commands;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Queries;
@@ -41,7 +42,7 @@ namespace Store.Api.Controllers
         {
             return await _mediator.Send(new DeletePreInvoiceDetail()
             {
-                Request=new Test.Application.DTOs.PreInvoiceHeader.DeletePreInvoiceDetailDto()
+                Request=new DeletePreInvoiceDetailDto()
                 {
                     Id=id
                 }

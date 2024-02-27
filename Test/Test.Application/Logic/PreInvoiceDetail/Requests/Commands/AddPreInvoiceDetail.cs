@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Store.Application.Responses;
-using Test.Application.DTOs.PreInvoiceHeader;
+using Test.Application.DTOs.PreInvoiceDetail;
 
 namespace Test.Application.Logic.PreInvoiceHeader.Requests.Commands
 {

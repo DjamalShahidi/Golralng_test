@@ -3,10 +3,8 @@ using MediatR;
 using Store.Application.Responses;
 using System.Linq.Expressions;
 using Test.Application.Contracts.Persistence;
-using Test.Application.DTOs.PreInvoiceHeader;
-using Test.Application.Logic.PreInvoiceHeader.Requests.Commands;
+using Test.Application.DTOs.PreInvoiceDetail;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Queries;
-using Test.Domain;
 
 namespace Test.Application.Logic.PreInvoiceDetail.Handlers.Queries
 {
