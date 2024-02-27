@@ -52,18 +52,25 @@ namespace Test.Application.DTOs.Discount.Validator
 
             RuleFor(a => a.Type)
              .IsInEnum().WithMessage("Invalid Type")
-             .When(a => a.Type == DiscountType.Row)
-             .Must((dto, type) => dto.PreInvoiceDetailId.HasValue)
-             .WithMessage("PreInvoiceDetailId is required for Row")
-             .When(a => a.Type == DiscountType.Document)
-             .Must((dto, type) => dto.PreInvoiceDetailId == null)
-             .WithMessage("PreInvoiceDetailId must be null for Document");
-
-
-    
-
-            RuleFor(a => a.Amount)
-              .GreaterThan(0).WithMessage("Invalid Amount");
+             .Must((model, type) =>
+             {
+                 if (type==DiscountType.Row )
+                 {
+                     if (model.PreInvoiceDetailId == null)
+                     {
+                         return false;
+                     }
+                 }
+                 else
+                 {
+                     if (model.PreInvoiceDetailId != null)
+                     {
+                         return false;
+                     }
+                 }
+                 return true;
+             })
+             .WithMessage("In Row type detail must be send ,and in Document type detail must be ignore");
 
             
         }
