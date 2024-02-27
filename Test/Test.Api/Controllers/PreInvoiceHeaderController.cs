@@ -4,6 +4,7 @@ using Store.Application.Responses;
 using Test.Application.DTOs.PreInvoiceHeader;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Commands;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Queries;
+using Test.Domain;
 
 namespace Store.Api.Controllers
 {
@@ -34,12 +35,12 @@ namespace Store.Api.Controllers
         public async Task<Response> UpdateStatus([FromForm] int  id)
         {
             return await _mediator.Send(new UpdateStatusPreInvoiceHeader() 
-                                        { 
-                                                Request=new UpdatePreInvoiceHeaderStatusDto() 
-                                                {   
-                                                    PreInvoiceHeaderId=id
-                                                } 
-                                        });
+            { 
+                Request=new UpdatePreInvoiceHeaderStatusDto() 
+                {   
+                    PreInvoiceHeaderId=id
+                } 
+            });
         }
 
         [HttpPut]
@@ -48,10 +49,16 @@ namespace Store.Api.Controllers
             return await _mediator.Send(updatePreInvoiceHeader);
         }
 
-        //[HttpDelete]
-        //public async Task<Response> DeletePreInvoiceHeader([FromBody] AddProduct addProduct)
-        //{
-        //    return await _mediator.Send(addProduct);
-        //}
+        [HttpDelete]
+        public async Task<Response> DeletePreInvoiceHeader([FromQuery] int id)
+        {
+            return await _mediator.Send(new DeletePreInvoiceHeader()
+            {
+                Request = new DeletePreInvoiceHeaderDto()
+                {
+                    PreInvoiceHeaderId = id
+                }
+            });
+        }
     }
 }
