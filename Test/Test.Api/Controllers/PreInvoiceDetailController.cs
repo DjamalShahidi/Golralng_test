@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Store.Application.Responses;
+using Test.Application.Logic.PreInvoiceDetail.Requests.Commands;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Commands;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Queries;
 
@@ -35,10 +36,16 @@ namespace Store.Api.Controllers
             return await _mediator.Send(updatePreInvoiceDetail);
         }
 
-        //[HttpDelete]
-        //public async Task<Response> DeletePreInvoiceDetail([FromBody] AddProduct addProduct)
-        //{
-        //    return await _mediator.Send(addProduct);
-        //}
+        [HttpDelete]
+        public async Task<Response> DeletePreInvoiceDetail([FromQuery] int id)
+        {
+            return await _mediator.Send(new DeletePreInvoiceDetail()
+            {
+                Request=new Test.Application.DTOs.PreInvoiceHeader.DeletePreInvoiceDetailDto()
+                {
+                    Id=id
+                }
+            });
+        }
     }
 }

@@ -25,13 +25,13 @@ namespace Test.Application.DTOs.PreInvoiceDetail._ٰValidator
                 .GreaterThan(0).WithMessage("Invalid Id")
                 .MustAsync(async (id, token) =>
                 {
-                    var isExist = await _unitOfWork.PreInvoiceDetailRepository.IsExist(id);
+                    var preInvoiceDetail = await _unitOfWork.PreInvoiceDetailRepository.GetAsync(id);
 
-                    if (isExist==false)
+                    if (preInvoiceDetail == null)
                     {
                         return false;
                     }
-                    preInvoiceHeader = await _unitOfWork.PreInvoiceHeaderRepository.GetAsync(id);
+                    preInvoiceHeader = await _unitOfWork.PreInvoiceHeaderRepository.GetAsync(preInvoiceDetail.PreInvoiceHeaderId);
 
                     if (preInvoiceHeader == null)
                     {
