@@ -23,22 +23,5 @@ namespace Store.Api.Controllers
             return await _mediator.Send(new GetSaleLines());
         }
 
-        //[HttpGet]
-        //public async Task<Response> GetDiscount([FromQuery] GetProducts getProducts)
-        //{
-        //    return await _mediator.Send(getProducts);
-        //}
-
-        //[HttpPut]
-        //public async Task<Response> UpdateDiscount([FromBody] AddProduct addProduct)
-        //{
-        //    return await _mediator.Send(addProduct);
-        //}
-
-        //[HttpDelete]
-        //public async Task<Response> DeleteDiscount([FromBody] AddProduct addProduct)
-        //{
-        //    return await _mediator.Send(addProduct);
-        //}
     }
 }
