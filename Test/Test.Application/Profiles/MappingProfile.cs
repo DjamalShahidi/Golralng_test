@@ -8,7 +8,9 @@ namespace Test.Application.Profiles
     {
         public MappingProfile()
         {
-            CreateMap<PreInvoiceHeader, AddPreInvoiceDetailDto>().ReverseMap();
+            CreateMap<PreInvoiceHeader, AddPreInvoiceHeaderDto>().ReverseMap(); 
+            CreateMap<PreInvoiceDetail, AddPreInvoiceDetailDto>().ReverseMap();
+
 
             //CreateMap<AddFeatureDto, Feature>().ForMember(dest => dest.Type, opt => opt.MapFrom(src => MapValueType(src.Value))).ReverseMap();
             //CreateMap<GetFeatureDto, Feature>().ReverseMap();
