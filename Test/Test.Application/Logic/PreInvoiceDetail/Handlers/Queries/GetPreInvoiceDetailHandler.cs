@@ -21,34 +21,47 @@ namespace Test.Application.Logic.PreInvoiceDetail.Handlers.Queries
 
         public async Task<Response> Handle(GetPreInvoiceDetail request, CancellationToken cancellationToken)
         {
-            Expression<Func<Domain.PreInvoiceDetail, bool>> filter = a => request.PreInvoiceHeaderId == a.PreInvoiceHeaderId;
-
-            var preInvoiceDetais = await _unitOfWork.PreInvoiceDetailRepository.GetListAsync(filter);
-
-            var productIds = preInvoiceDetais.Select(a => a.ProductId).ToList();
-
-            Expression<Func<Domain.Product, bool>> productFilter = a => productIds.Contains(a.Id);
-
-            var products = await _unitOfWork.ProductRepository.GetListAsync(productFilter);
-
-            var result = new List<GetPreInvoiceDetailDto>();
-
-            foreach (var item in preInvoiceDetais)
+            try
             {
-                var getPreInvoiceDetailDto = _mapper.Map<GetPreInvoiceDetailDto>(item);
 
-                var productForThisDetails = products.FirstOrDefault(a => a.Id == item.ProductId);
 
-                getPreInvoiceDetailDto.Product = _mapper.Map<GetPreInvoiceDetailDtoProduct>(productForThisDetails);
+                Expression<Func<Domain.PreInvoiceDetail, bool>> filter = a => request.PreInvoiceHeaderId == a.PreInvoiceHeaderId;
 
-                result.Add(getPreInvoiceDetailDto); 
+                var preInvoiceDetais = await _unitOfWork.PreInvoiceDetailRepository.GetListAsync(filter);
+
+                var productIds = preInvoiceDetais.Select(a => a.ProductId).ToList();
+
+                Expression<Func<Domain.Product, bool>> productFilter = a => productIds.Contains(a.Id);
+
+                var products = await _unitOfWork.ProductRepository.GetListAsync(productFilter);
+
+                var result = new List<GetPreInvoiceDetailDto>();
+
+                foreach (var item in preInvoiceDetais)
+                {
+                    var getPreInvoiceDetailDto = _mapper.Map<GetPreInvoiceDetailDto>(item);
+
+                    var productForThisDetails = products.FirstOrDefault(a => a.Id == item.ProductId);
+
+                    getPreInvoiceDetailDto.Product = _mapper.Map<GetPreInvoiceDetailDtoProduct>(productForThisDetails);
+
+                    result.Add(getPreInvoiceDetailDto);
+                }
+
+                return new Response()
+                {
+                    IsSuccess = true,
+                    Result = result
+                };
             }
-
-            return new Response()
+            catch (Exception ex)
             {
-                IsSuccess = true,
-                Result = result
-            };
+                return new Response()
+                {
+                    IsSuccess = true,
+                    ErrorMessages = new List<string> { ex.Message }
+                };
+            }
         }
     }
 }

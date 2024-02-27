@@ -4,6 +4,7 @@ using Store.Application.Responses;
 using Test.Application.Contracts.Persistence;
 using Test.Application.DTOs.PreInvoiceDetail.Validator;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Commands;
+using Test.Domain;
 
 namespace Test.Application.Logic.PreInvoiceDetail.Handlers.Commands
 {
@@ -20,35 +21,47 @@ namespace Test.Application.Logic.PreInvoiceDetail.Handlers.Commands
 
         public async Task<Response> Handle(UpdatePreInvoiceDetail request, CancellationToken cancellationToken)
         {
-            var validator = new UpdatePreInvoiceDetailDtoValidator(_unitOfWork);
+            try
+            {
 
-            var validatorResult = await validator.ValidateAsync(request.Request);
 
-            if (validatorResult.IsValid == false)
+                var validator = new UpdatePreInvoiceDetailDtoValidator(_unitOfWork);
+
+                var validatorResult = await validator.ValidateAsync(request.Request);
+
+                if (validatorResult.IsValid == false)
+                {
+                    return new Response()
+                    {
+                        ErrorMessages = validatorResult.Errors.Select(a => a.ErrorMessage).ToList(),
+                        IsSuccess = false,
+                        Result = null
+                    };
+                }
+
+
+                var preInvoiceDetail = await _unitOfWork.PreInvoiceDetailRepository.GetAsync(request.Request.Id);
+
+                preInvoiceDetail = _mapper.Map<Domain.PreInvoiceDetail>(request.Request);
+
+                _unitOfWork.PreInvoiceDetailRepository.Update(preInvoiceDetail);
+
+                await _unitOfWork.Save(cancellationToken);
+
+                return new Response()
+                {
+                    IsSuccess = true,
+                    Result = preInvoiceDetail.Id
+                };
+            }
+            catch (Exception ex)
             {
                 return new Response()
                 {
-                    ErrorMessages = validatorResult.Errors.Select(a => a.ErrorMessage).ToList(),
                     IsSuccess = false,
-                    Result = null
+                    ErrorMessages = new List<string>() { ex.Message }
                 };
             }
-
-
-            var preInvoiceDetail = await _unitOfWork.PreInvoiceDetailRepository.GetAsync(request.Request.Id);
-
-            preInvoiceDetail = _mapper.Map<Domain.PreInvoiceDetail>(request.Request);
-
-            _unitOfWork.PreInvoiceDetailRepository.Update(preInvoiceDetail);
-
-            await _unitOfWork.Save(cancellationToken);
-
-            return new Response()
-            {
-                IsSuccess = true,
-                Result = preInvoiceDetail.Id
-            };
         }
-
     }
 }
