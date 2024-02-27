@@ -14,6 +14,8 @@ namespace Test.Domain
 
         public double Amount { get; set; }
 
+        public DiscountType Type { get; set; }
+
     }
 
     public enum DiscountType

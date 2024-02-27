@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Store.Application.Responses;
+using Test.Application.Logic.PreInvoiceHeader.Requests.Commands;
 
 namespace Store.Api.Controllers
 {
@@ -15,11 +16,11 @@ namespace Store.Api.Controllers
             this._mediator = mediator;
         }
 
-        //[HttpPost]
-        //public async Task<Response> AddDiscount([FromBody] AddProduct addProduct)
-        //{
-        //    return await _mediator.Send(addProduct);
-        //}
+        [HttpPost]
+        public async Task<Response> AddDiscount([FromBody] AddDiscount addDiscount)
+        {
+            return await _mediator.Send(addDiscount);
+        }
 
         //[HttpGet]
         //public async Task<Response> GetDiscount([FromQuery] GetProducts getProducts)

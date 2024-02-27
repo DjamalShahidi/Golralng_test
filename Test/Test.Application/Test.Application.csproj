@@ -12,10 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\Discount\" />
-    <Folder Include="Logic\Discount\Handlers\Commands\" />
     <Folder Include="Logic\Discount\Handlers\Queries\" />
-    <Folder Include="Logic\Discount\Requests\Commands\" />
     <Folder Include="Logic\Discount\Requests\Queries\" />
     <Folder Include="Logic\PreInvoiceDetail\Handlers\Queries\" />
     <Folder Include="Logic\PreInvoiceDetail\Requests\Queries\" />
