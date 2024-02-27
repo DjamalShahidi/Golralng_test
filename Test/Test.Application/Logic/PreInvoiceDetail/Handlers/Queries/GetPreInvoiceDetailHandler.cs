@@ -42,6 +42,8 @@ namespace Test.Application.Logic.PreInvoiceDetail.Handlers.Queries
                 var productForThisDetails = products.FirstOrDefault(a => a.Id == item.ProductId);
 
                 getPreInvoiceDetailDto.Product = _mapper.Map<GetPreInvoiceDetailDtoProduct>(productForThisDetails);
+
+                result.Add(getPreInvoiceDetailDto); 
             }
 
             return new Response()
