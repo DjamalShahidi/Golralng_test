@@ -9,5 +9,7 @@ namespace Test.Application.Contracts.Persistence
         Task<double> GetTotalPrice(int preInvoiceHeaderId);
 
         Task<double> GetFinalTotalPrice(int customerId);
+
+        Task<bool> IsExistWithThisPreInvoiceHeaderId(int preInvoiceHeaderId);
     }
 }

@@ -33,14 +33,20 @@ namespace Store.Api.Controllers
         [HttpPut,Route("status")]
         public async Task<Response> UpdateStatus([FromForm] int  id)
         {
-            return await _mediator.Send(new UpdateStatusPreInvoiceHeader() { Request=new UpdatePreInvoiceHeaderStatusDto() { PreInvoiceHeaderId=id} });
+            return await _mediator.Send(new UpdateStatusPreInvoiceHeader() 
+                                        { 
+                                                Request=new UpdatePreInvoiceHeaderStatusDto() 
+                                                {   
+                                                    PreInvoiceHeaderId=id
+                                                } 
+                                        });
         }
 
-        //[HttpPut]
-        //public async Task<Response> UpdatePreInvoiceHeader([FromBody] AddProduct addProduct)
-        //{
-        //    return await _mediator.Send(addProduct);
-        //}
+        [HttpPut]
+        public async Task<Response> UpdatePreInvoiceHeader([FromBody] UpdatePreInvoiceHeader updatePreInvoiceHeader)
+        {
+            return await _mediator.Send(updatePreInvoiceHeader);
+        }
 
         //[HttpDelete]
         //public async Task<Response> DeletePreInvoiceHeader([FromBody] AddProduct addProduct)

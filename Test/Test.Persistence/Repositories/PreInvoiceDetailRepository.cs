@@ -29,5 +29,11 @@ namespace Test.Persistence.Repositories
                                                             && a.PreInvoiceHeader.Status==PreInvoiceHeaderStatus.Final)
                                                    .SumAsync(a => a.Price * a.Count);
         }
+
+        public async Task<bool> IsExistWithThisPreInvoiceHeaderId(int preInvoiceHeaderId)
+        {
+            return await _context.PreInvoiceDetails.AnyAsync(a => a.PreInvoiceHeaderId == preInvoiceHeaderId );
+
+        }
     }
 }

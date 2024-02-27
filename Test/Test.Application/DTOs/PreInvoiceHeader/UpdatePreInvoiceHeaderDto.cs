@@ -8,6 +8,12 @@ namespace Test.Application.DTOs.PreInvoiceHeader
 
         public int SellerId { get; set; }
 
-        public AddPreInvoiceHeaderDtoCustomer Customer { get; set; }
+        public UpdatePreInvoiceHeaderDtoCustomer Customer { get; set; }
+    }
+    public class UpdatePreInvoiceHeaderDtoCustomer
+    {
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
     }
 }
