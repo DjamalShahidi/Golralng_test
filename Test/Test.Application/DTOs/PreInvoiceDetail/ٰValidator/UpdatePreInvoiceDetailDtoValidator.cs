@@ -1,29 +1,43 @@
 ﻿using FluentValidation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Test.Application.Contracts.Persistence;
+using Test.Application.DTOs.PreInvoiceHeader;
 using Test.Domain;
 
-namespace Test.Application.DTOs.PreInvoiceHeader._ٰValidator
+namespace Test.Application.DTOs.PreInvoiceDetail._ٰValidator
 {
-    public class AddPreInvoiceDetailDtoValidator : AbstractValidator<AddPreInvoiceDetailDto>
+    public class UpdatePreInvoiceDetailDtoValidator : AbstractValidator<UpdatePreInvoiceDetailDto>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddPreInvoiceDetailDtoValidator(IUnitOfWork unitOfWork)
+        public UpdatePreInvoiceDetailDtoValidator(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
 
             Domain.PreInvoiceHeader preInvoiceHeader = null;
 
-            RuleFor(a => a.PreInvoiceHeaderId)
-                .GreaterThan(0).WithMessage("Invalid PreInvoiceHeaderId")
+
+            RuleFor(a => a.Id)
+                .GreaterThan(0).WithMessage("Invalid Id")
                 .MustAsync(async (id, token) =>
                 {
+                    var isExist = await _unitOfWork.PreInvoiceDetailRepository.IsExist(id);
+
+                    if (isExist==false)
+                    {
+                        return false;
+                    }
                     preInvoiceHeader = await _unitOfWork.PreInvoiceHeaderRepository.GetAsync(id);
+
                     if (preInvoiceHeader == null)
                     {
                         return false;
                     }
-                    else if (preInvoiceHeader.Status ==PreInvoiceHeaderStatus.Final )
+                    else if (preInvoiceHeader.Status == PreInvoiceHeaderStatus.Final)
                     {
                         return false;
                     }
@@ -35,23 +49,23 @@ namespace Test.Application.DTOs.PreInvoiceHeader._ٰValidator
 
             RuleFor(a => a.ProductId)
              .GreaterThan(0).WithMessage("Invalid ProductId")
-             .MustAsync(async (id, token) =>
-                 {
-                     if (preInvoiceHeader!=null)
-                     {
-                         var isExist = await _unitOfWork.ProductSaleLineRepository.IsExist(id, preInvoiceHeader.SalesLineId);
-                         return isExist;
-                     }
-                     else
-                     {
-                         return false;
-                     }
-                 }).WithMessage("Not Exist product in this line")
-             .MustAsync(async (id, token) =>
+             .MustAsync(async (productId, token) =>
              {
                  if (preInvoiceHeader != null)
                  {
-                     var isExist = await _unitOfWork.PreInvoiceDetailRepository.CheckDublicateProductForAdd(preInvoiceHeader.Id, id);
+                     var isExist = await _unitOfWork.ProductSaleLineRepository.IsExist(productId, preInvoiceHeader.SalesLineId);
+                     return isExist;
+                 }
+                 else
+                 {
+                     return false;
+                 }
+             }).WithMessage("Not Exist product in this line")
+             .MustAsync(async (model ,productId,token) =>
+             {
+                 if (preInvoiceHeader != null)
+                 {
+                     var isExist = await _unitOfWork.PreInvoiceDetailRepository.CheckDublicateProductForUpdate(preInvoiceHeader.Id, model.Id,productId);
                      if (isExist)
                      {
                          return false;

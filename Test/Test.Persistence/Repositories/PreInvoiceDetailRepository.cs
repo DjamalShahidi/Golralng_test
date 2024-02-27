@@ -13,9 +13,14 @@ namespace Test.Persistence.Repositories
             this._context = context;
         }
 
-        public async Task<bool> DublicateProduct(int preInvoiceHeaderId, int productId)
+        public async Task<bool> CheckDublicateProductForAdd(int preInvoiceHeaderId, int productId)
         {
             return await _context.PreInvoiceDetails.AnyAsync(a => a.PreInvoiceHeaderId == preInvoiceHeaderId && a.ProductId == productId);
+        }
+
+        public async Task<bool> CheckDublicateProductForUpdate(int preInvoiceHeaderId,int preInvoiceDetailId, int productId)
+        {
+            return await _context.PreInvoiceDetails.AnyAsync(a => a.PreInvoiceHeaderId == preInvoiceHeaderId && a.ProductId == productId  && a.Id != preInvoiceDetailId);
         }
 
         public async Task<double> GetTotalPrice(int preInvoiceHeaderId)

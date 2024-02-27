@@ -29,11 +29,11 @@ namespace Store.Api.Controllers
             return await _mediator.Send(getPreInvoiceDetail);
         }
 
-        //[HttpPut]
-        //public async Task<Response> UpdatePreInvoiceDetail([FromBody] AddProduct addProduct)
-        //{
-        //    return await _mediator.Send(addProduct);
-        //}
+        [HttpPut]
+        public async Task<Response> UpdatePreInvoiceDetail([FromBody] UpdatePreInvoiceDetail updatePreInvoiceDetail)
+        {
+            return await _mediator.Send(updatePreInvoiceDetail);
+        }
 
         //[HttpDelete]
         //public async Task<Response> DeletePreInvoiceDetail([FromBody] AddProduct addProduct)
