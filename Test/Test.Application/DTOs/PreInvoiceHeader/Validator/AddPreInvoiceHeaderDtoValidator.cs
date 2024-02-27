@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Test.Application.Contracts.Persistence;
 
-namespace Test.Application.DTOs.PreInvoiceHeader._ٰValidator
+namespace Test.Application.DTOs.PreInvoiceHeader.Validator
 {
     public class AddPreInvoiceHeaderDtoValidator : AbstractValidator<AddPreInvoiceHeaderDto>
     {

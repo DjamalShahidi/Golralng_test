@@ -2,7 +2,7 @@
 using MediatR;
 using Store.Application.Responses;
 using Test.Application.Contracts.Persistence;
-using Test.Application.DTOs.PreInvoiceHeader._ٰValidator;
+using Test.Application.DTOs.PreInvoiceHeader.Validator;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Commands;
 
 namespace Test.Application.Logic.PreInvoiceHeader.Handlers.Commands
