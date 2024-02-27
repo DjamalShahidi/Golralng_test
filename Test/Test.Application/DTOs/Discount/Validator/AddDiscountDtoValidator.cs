@@ -49,10 +49,10 @@ namespace Test.Application.DTOs.Discount.Validator
              .IsInEnum().WithMessage("Invalid Type")
              .When(a => a.Type == DiscountType.Row)
              .Must((dto, type) => dto.PreInvoiceDetailId.HasValue)
-             .WithMessage("PreInvoiceDetailId is required for DiscountType.Row")
+             .WithMessage("PreInvoiceDetailId is required for Row")
              .When(a => a.Type == DiscountType.Document)
              .Must((dto, type) => dto.PreInvoiceDetailId == null)
-             .WithMessage("PreInvoiceDetailId must be null for DiscountType.Document");
+             .WithMessage("PreInvoiceDetailId must be null for Document");
 
 
     
