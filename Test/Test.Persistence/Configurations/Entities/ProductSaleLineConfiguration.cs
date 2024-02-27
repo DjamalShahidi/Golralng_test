@@ -18,6 +18,20 @@ namespace Test.Persistence.Configurations.Entities
             builder.HasOne(a => a.SalesLine)
                    .WithMany(a => a.ProductSaleLines)
                    .HasForeignKey(a => a.SalesLineId);
+
+            for (int i = 1; i <= 100; i++)
+            {
+                Random rnd = new Random();
+                int randomSalesLine = rnd.Next(1, 6);
+
+                builder.HasData(
+                    new ProductSaleLine
+                    {
+                        ProductId = i,
+                        SalesLineId = randomSalesLine,
+                    }
+                );
+            }
         }
     }
 }

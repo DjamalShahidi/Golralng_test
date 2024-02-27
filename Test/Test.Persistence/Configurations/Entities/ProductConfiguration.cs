@@ -11,6 +11,18 @@ namespace Test.Persistence.Configurations.Entities
             builder.Property(p => p.Title)
                    .IsRequired()
                    .HasMaxLength(50);
+
+            for (int i = 1; i <= 100; i++)
+            {
+                builder.HasData(
+                    new Product
+                    {
+                        Id = i,
+                        Title = $"Product {i}",
+                        CreateDate = DateTime.Now,
+                    }
+                );
+            }
         }
     }
 }
