@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,10 @@ namespace Test.Persistence.Repositories
         public SellerRepository(TestDbContext context) : base(context)
         {
             this._context = context;
+        }
+        public async Task<bool> IsExist(int sellerId ,int saleLineId)
+        {
+            return await _context.Sellers.AnyAsync(a => a.Id == sellerId && a.SalesLineId == saleLineId);
         }
     }
 }

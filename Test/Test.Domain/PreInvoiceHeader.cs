@@ -16,7 +16,7 @@ namespace Test.Domain
 
         public int SellerId { get; set; }
 
-        public PreInvoiceHeaderStatus Status { get; set; }
+        public PreInvoiceHeaderStatus Status { get; set; } = PreInvoiceHeaderStatus.Draft;
 
         public List<PreInvoiceDetail> PreInvoiceDetails { get; set; }
     }

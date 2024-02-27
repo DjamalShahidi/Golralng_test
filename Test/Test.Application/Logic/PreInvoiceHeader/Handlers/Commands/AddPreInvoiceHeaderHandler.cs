@@ -21,6 +21,7 @@ namespace Test.Application.Logic.PreInvoiceHeader.Handlers.Commands
         public async Task<Response> Handle(AddPreInvoiceHeader request, CancellationToken cancellationToken)
         {
             var validator = new AddPreInvoiceHeaderDtoValidator(_unitOfWork);
+
             var validatorResult = await validator.ValidateAsync(request.Request);
 
             if (validatorResult.IsValid == false)
