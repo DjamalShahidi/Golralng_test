@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Test.Domain;
+﻿using Test.Domain;
 
 namespace Test.Application.Contracts.Persistence
 {
     public interface IProductSaleLineRepository : IGenericRepository<ProductSaleLine>
     {
+
+        Task<bool> IsExist(int productId, int saleLineId);
     }
 }

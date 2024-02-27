@@ -4,5 +4,6 @@ namespace Test.Application.Contracts.Persistence
 {
     public interface IPreInvoiceDetailRepository : IGenericRepository<PreInvoiceDetail>
     {
+        Task<bool> DublicateProduct(int preInvoiceHeaderId, int productId);
     }
 }

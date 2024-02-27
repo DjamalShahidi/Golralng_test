@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Test.Application.Contracts.Persistence;
 using Test.Application.DTOs.Product;
+using Test.Domain;
 
 namespace Test.Application.DTOs.PreInvoiceHeader._ٰValidator
 {
@@ -17,8 +18,41 @@ namespace Test.Application.DTOs.PreInvoiceHeader._ٰValidator
         {
             _unitOfWork = unitOfWork;
 
+            Domain.PreInvoiceHeader preInvoiceHeader = null;
+
+            RuleFor(a => a.PreInvoiceHeaderId)
+                .GreaterThan(0).WithMessage("Invalid PreInvoiceHeaderId")
+                .MustAsync(async (id, token) =>
+                {
+                    preInvoiceHeader = await _unitOfWork.PreInvoiceHeaderRepository.GetAsync(id);
+                    if (preInvoiceHeader == null)
+                    {
+                        return false;
+                    }
+                    return true;
+
+                }).WithMessage("Invalid PreInvoiceHeaderId");
+
+
+
             RuleFor(a => a.ProductId)
-             .GreaterThan(0).WithMessage("Invalid ProductId");
+             .GreaterThan(0).WithMessage("Invalid ProductId")
+             .MustAsync(async (id, token) =>
+                 {
+                     var isExist = await _unitOfWork.ProductSaleLineRepository.IsExist(id, preInvoiceHeader.SalesLineId);
+                     return isExist;
+
+                 }).WithMessage("Not Exist product in this line")
+             .MustAsync(async (id, token) =>
+             {
+                 var isExist = await _unitOfWork.PreInvoiceDetailRepository.DublicateProduct(id, preInvoiceHeader.Id);
+                 if (isExist)
+                 {
+                     return false;
+                 }
+                 return true;
+
+             }).WithMessage("Not Exist product in this line");
 
             RuleFor(a => a.Price)
               .GreaterThan(0).WithMessage("Invalid Price");
@@ -26,37 +60,6 @@ namespace Test.Application.DTOs.PreInvoiceHeader._ٰValidator
             RuleFor(a => a.Count)
               .GreaterThan(0).WithMessage("Invalid Count");
 
-            RuleFor(a => a.PreInvoiceHeaderId)
-                .GreaterThan(0).WithMessage("Invalid PreInvoiceHeaderId");
-            //RuleFor(a => a.GetHashCode)
-            // .NotNull().NotEmpty().WithMessage("Code must be send");
-
-            //RuleFor(a => a.CategoryId)
-            //     .GreaterThan(0).WithMessage("Invalid CategoryId")
-            //     .MustAsync(async (id, token) =>
-            //     {
-            //         var isExist = await _unitOfWork.CategoryRepository.IsExist(id);
-            //         return isExist;
-
-            //     }).WithMessage("Invalid CategoryId");
-
-            //RuleFor(a => a.FeatureIds)
-            //  .NotNull().NotEmpty().WithMessage("Invalid FeatureId")
-            //  .MustAsync(async (ids, token) =>
-            //  {
-            //      foreach (var id in ids)
-            //      {
-            //          var isExist = await _unitOfWork.FeaturesRepository.IsExist(id);
-            //          if (!isExist)
-            //          {
-            //              return false;
-            //          }
-            //      }
-
-            //      return true;
-            //  }).WithMessage("Invalid FeatureId");
         }
-
-
     }
 }

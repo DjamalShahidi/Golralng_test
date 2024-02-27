@@ -13,5 +13,9 @@ namespace Test.Persistence.Repositories
             this._context = context;
         }
 
+        public async Task<bool> DublicateProduct(int preInvoiceHeaderId, int productId)
+        {
+            return await _context.PreInvoiceDetails.AnyAsync(a => a.PreInvoiceHeaderId == preInvoiceHeaderId && a.ProductId == productId);
+        }
     }
 }
