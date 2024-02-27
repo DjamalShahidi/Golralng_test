@@ -1,6 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Store.Application.Responses;
+using Test.Application.DTOs.Discount;
+using Test.Application.DTOs.PreInvoiceDetail;
+using Test.Application.Logic.Discount.Requests.Commands;
+using Test.Application.Logic.PreInvoiceDetail.Requests.Commands;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Commands;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Queries;
 
@@ -35,10 +39,16 @@ namespace Store.Api.Controllers
             return await _mediator.Send(updateDiscount);
         }
 
-        //[HttpDelete]
-        //public async Task<Response> DeleteDiscount([FromBody] AddProduct addProduct)
-        //{
-        //    return await _mediator.Send(addProduct);
-        //}
+        [HttpDelete]
+        public async Task<Response> DeleteDiscount([FromQuery] int id)
+        {
+            return await _mediator.Send(new DeleteDiscount()
+            {
+                Request = new DeleteDiscountDto()
+                {
+                    Id = id
+                }
+            });
+        }
     }
 }
