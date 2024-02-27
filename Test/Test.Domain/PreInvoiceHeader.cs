@@ -1,6 +1,8 @@
-﻿namespace Test.Domain
+﻿using Test.Domain.Common;
+
+namespace Test.Domain
 {
-    public class PreInvoiceHeader
+    public class PreInvoiceHeader:BaseDomainEntity
     {
         public SalesLine SalesLine { get; set; }
 

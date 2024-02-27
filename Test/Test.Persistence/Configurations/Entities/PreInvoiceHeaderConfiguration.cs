@@ -19,7 +19,9 @@ namespace Test.Persistence.Configurations.Entities
 
             builder.HasOne(a => a.Seller)
                    .WithMany(a => a.PreInvoiceHeaders)
-                   .HasForeignKey(a => a.SellerId);
+                   .HasForeignKey(a => a.SellerId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }
