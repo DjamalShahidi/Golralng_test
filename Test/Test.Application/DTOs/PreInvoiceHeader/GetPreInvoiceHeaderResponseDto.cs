@@ -2,7 +2,7 @@
 
 namespace Test.Application.DTOs.PreInvoiceHeader
 {
-    public record GetPreInvoiceHeaderDto : BaseDto
+    public record GetPreInvoiceHeaderResponseDto : BaseDto
     {
         public int SalesLineId { get; set; }
 
