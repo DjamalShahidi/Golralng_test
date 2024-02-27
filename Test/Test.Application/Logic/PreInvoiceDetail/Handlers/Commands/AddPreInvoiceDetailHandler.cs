@@ -1,26 +1,31 @@
 ﻿using AutoMapper;
 using MediatR;
 using Store.Application.Responses;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Test.Application.Contracts.Persistence;
 using Test.Application.DTOs.PreInvoiceHeader._ٰValidator;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Commands;
 
 namespace Test.Application.Logic.PreInvoiceDetail.Handlers.Commands
 {
-    public class AddPreInvoiceHeaderHandler : IRequestHandler<AddPreInvoiceHeader, Response>
+    public class AddPreInvoiceDetailHandler : IRequestHandler<AddPreInvoiceDetail, Response>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public AddPreInvoiceHeaderHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public AddPreInvoiceDetailHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            this._unitOfWork = unitOfWork;
-            this._mapper = mapper;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<Response> Handle(AddPreInvoiceHeader request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(AddPreInvoiceDetail request, CancellationToken cancellationToken)
         {
-            var validator = new AddPreInvoiceHeaderDtoValidator(_unitOfWork);
+            var validator = new AddPreInvoiceDetailDtoValidator(_unitOfWork);
             var validatorResult = await validator.ValidateAsync(request.Request);
 
             if (validatorResult.IsValid == false)
@@ -33,16 +38,16 @@ namespace Test.Application.Logic.PreInvoiceDetail.Handlers.Commands
                 };
             }
 
-            var preInvoiceHeader = _mapper.Map<Domain.PreInvoiceHeader>(request.Request);
+            var preInvoiceDetail = _mapper.Map<Domain.PreInvoiceDetail>(request.Request);
 
-            preInvoiceHeader = await _unitOfWork.PreInvoiceHeaderRepository.AddAsync(preInvoiceHeader);
+            preInvoiceDetail = await _unitOfWork.PreInvoiceDetailRepository.AddAsync(preInvoiceDetail);
 
             await _unitOfWork.Save(cancellationToken);
 
             return new Response()
             {
                 IsSuccess = true,
-                Result = preInvoiceHeader.Id
+                Result = preInvoiceDetail.Id
             };
         }
 
