@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Store.Application.Responses;
 using Test.Application.Logic.PreInvoiceHeader.Requests.Commands;
+using Test.Application.Logic.PreInvoiceHeader.Requests.Queries;
 
 namespace Store.Api.Controllers
 {
@@ -22,11 +23,11 @@ namespace Store.Api.Controllers
             return await _mediator.Send(addPreInvoiceDetail);
         }
 
-        //[HttpGet]
-        //public async Task<Response> GetPreInvoiceDetail([FromQuery] GetProducts getProducts)
-        //{
-        //    return await _mediator.Send(getProducts);
-        //}
+        [HttpGet]
+        public async Task<Response> GetPreInvoiceDetail([FromQuery] GetPreInvoiceDetail getPreInvoiceDetail)
+        {
+            return await _mediator.Send(getPreInvoiceDetail);
+        }
 
         //[HttpPut]
         //public async Task<Response> UpdatePreInvoiceDetail([FromBody] AddProduct addProduct)

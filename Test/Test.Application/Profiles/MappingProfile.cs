@@ -18,7 +18,8 @@ namespace Test.Application.Profiles
             CreateMap<Customer, AddPreInvoiceHeaderDtoCustomer  >().ReverseMap();
             CreateMap<PreInvoiceHeader, GetPreInvoiceHeaderDto>().ReverseMap();
             CreateMap<Customer, GetPreInvoiceHeaderDtoCustomer>().ReverseMap();
-
+            CreateMap<Product, GetPreInvoiceDetailDtoProduct>().ReverseMap();
+            CreateMap<PreInvoiceDetail, GetPreInvoiceDetailDto>().ReverseMap();
         }
     }
 }

@@ -16,7 +16,6 @@
     <Folder Include="DTOs\Seller\" />
     <Folder Include="Logic\Discount\Handlers\Queries\" />
     <Folder Include="Logic\Discount\Requests\Queries\" />
-    <Folder Include="Logic\PreInvoiceDetail\Requests\Queries\" />
     <Folder Include="Logic\PreInvoiceHeader\Handlers\Queries\" />
   </ItemGroup>
 
